@@ -56,7 +56,8 @@ public class OnlineCoursesAnalyzer {
 //                }
 //            }
 //            return map;
-        Map<String, Integer> map = courses.stream().sorted(Comparator.comparing(Course::getInstitution).reversed()).collect(Collectors.groupingBy(Course::getInstitution, Collectors.summingInt(Course::getParticipants)));
+        Map<String, Integer> map = courses.stream().sorted(Comparator.comparing(Course::getInstitution).reversed()).
+                collect(Collectors.groupingBy(Course::getInstitution, Collectors.summingInt(Course::getParticipants)));
         return map;
     }
 
@@ -83,22 +84,32 @@ public class OnlineCoursesAnalyzer {
              String[] name = course.instructors.split(", ");
             Arrays.stream(name).forEach(element -> {
                 if (map.containsKey(element)) {
-                    if (name.length == 1 && !map.get(element).get(0).contains(course.title)) {map.get(element).get(0).add(course.title);
-                    } else {if (name.length > 1 && !map.get(element).get(1).contains(course.title)) {map.get(element).get(1).add(course.title);
+                    if (name.length == 1 && !map.get(element).get(0).contains(course.title)) {
+                        map.get(element).get(0).add(course.title);
+                    } else {if (name.length > 1 && !map.get(element).get(1).contains(course.title)) {
+                        map.get(element).get(1).add(course.title);
                         }
                     }
                 } else {
-                    List<String> a = new ArrayList<>();List<String> b = new ArrayList<>();List<List<String>> c = new ArrayList<>();c.add(a);c.add(b);
-                    if (name.length == 1) {a.add(course.title);
-                    } else {b.add(course.title);
-                    }map.put(element, c);
+                    List<String> a = new ArrayList<>();
+                    List<String> b = new ArrayList<>();
+                    List<List<String>> c = new ArrayList<>();
+                    c.add(a);
+                    c.add(b);
+                    if (name.length == 1) {
+                        a.add(course.title);
+                    } else {
+                        b.add(course.title);
+                    }
+                    map.put(element, c);
                 }
             });
         }
         for (List<List<String>> value : map.values()) {
 //           Collections.sort(value.get(0));
 //           Collections.sort(value.get(1));
-            value.get(0).sort(String::compareTo);value.get(1).sort(String::compareTo);
+            value.get(0).sort(String::compareTo);
+            value.get(1).sort(String::compareTo);
         }
 //        for (Map.Entry<String, List<List<String>>> entry : map.entrySet()) {
 //            String key = entry.getKey();
@@ -115,7 +126,11 @@ public class OnlineCoursesAnalyzer {
     public List<String> getCourses(int topK, String by) {
         List<String> courseTitles;
         if (by.equals("hours")) {
-            courseTitles = courses.stream().sorted(Comparator.comparing(Course::getTotalHours).reversed().thenComparing(Course::getTitle)).map(Course::getTitle).distinct().limit(topK)
+            courseTitles = courses.stream().
+                    sorted(Comparator.comparing(Course::getTotalHours).reversed().thenComparing(Course::getTitle)).
+                    map(Course::getTitle).
+                    distinct().
+                    limit(topK)
                     .collect(Collectors.toList());
         } else {
             courseTitles = courses.stream()
@@ -161,7 +176,6 @@ public class OnlineCoursesAnalyzer {
                 .values()
                 .stream()
                 .map(simi -> {
-                    System.out.println(simi.sim);
                     return simi;
                 })
                 .map(simi::getCourse_title).distinct().limit(10)
@@ -188,9 +202,7 @@ class simi {
         return sim;
     }
 
-    public Date getLaunchDate() {
-        return launchDate;
-    }
+
 
     Date launchDate;
 
@@ -221,65 +233,19 @@ class Course {
         return number;
     }
 
-    public Date getLaunchDate() {
-        return launchDate;
-    }
+
 
     public String getTitle() {
         return title;
     }
 
-    public String getInstructors() {
-        return instructors;
-    }
 
-    public int getYear() {
-        return year;
-    }
-
-    public int getHonorCode() {
-        return honorCode;
-    }
-
-    public int getAudited() {
-        return audited;
-    }
-
-    public int getCertified() {
-        return certified;
-    }
-
-    public double getPercentAudited() {
-        return percentAudited;
-    }
-
-    public double getPercentCertified() {
-        return percentCertified;
-    }
-
-    public double getPercentCertified50() {
-        return percentCertified50;
-    }
-
-    public double getPercentVideo() {
-        return percentVideo;
-    }
-
-    public double getPercentForum() {
-        return percentForum;
-    }
-
-    public double getGradeHigherZero() {
-        return gradeHigherZero;
-    }
 
     public double getTotalHours() {
         return totalHours;
     }
 
-    public double getMedianHoursCertification() {
-        return medianHoursCertification;
-    }
+
 
     public double getMedianAge() {
         return medianAge;
@@ -289,9 +255,6 @@ class Course {
         return percentMale;
     }
 
-    public double getPercentFemale() {
-        return percentFemale;
-    }
 
     public double getPercentDegree() {
 
